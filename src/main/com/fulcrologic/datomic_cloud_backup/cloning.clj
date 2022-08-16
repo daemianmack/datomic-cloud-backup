@@ -557,6 +557,7 @@
                            (p ::run-transaction
                              (d/transact target-conn {:tx-data final-txn
                                                       :timeout 10000000}))
+                           (log/info "Restored transaction" t "from" start-t "to" end-t)
                            (catch Throwable e
                              (log/error e "Restore transaction failed!"
                                {:db      source-database-name
