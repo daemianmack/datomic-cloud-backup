@@ -286,7 +286,7 @@
         :else (or
                 (let [matching-datoms (d/datoms db {:index      :avet
                                                     :components [::original-id old-id]})]
-                  (when (> (count matching-datoms) 1)
+                  (when (> (count (into [] matching-datoms)) 1)
                     (throw (ex-info "ID Resolution failed! Two entities share the same original ID!" {:original-id old-id})))
                   (-> matching-datoms first :e))
                 (str old-id))))))
