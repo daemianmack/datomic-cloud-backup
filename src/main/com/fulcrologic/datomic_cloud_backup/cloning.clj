@@ -447,10 +447,11 @@
                                               :id->attr    id->attr
                                               :source-refs refs} tx-entry)
                   pruned-txn   (prune-tempids-as-values target-refs resolved-txn)
-                  final-txn    (rewrite-and-filter-txn {:to-one?   (partial to-one? (d/db target-conn))
-                                                        :id->attr  id->attr
-                                                        :blacklist blacklist
-                                                        :rewrite   rewrite} pruned-txn)]
+                  final-txn    (sort-by (comp str second)
+                                (rewrite-and-filter-txn {:to-one?   (partial to-one? (d/db target-conn))
+                                                         :id->attr  id->attr
+                                                         :blacklist blacklist
+                                                         :rewrite   rewrite} pruned-txn))]
               (try
                 (when (empty? final-txn)
                   (throw (ex-info "Incorrect transaction didn't record restore (empty!)" {})))
@@ -545,10 +546,11 @@
                                                          :id->attr    id->attr
                                                          :source-refs refs} tx-entry)
                              pruned-txn   (prune-tempids-as-values target-refs resolved-txn)
-                             final-txn    (rewrite-and-filter-txn {:to-one?   (partial to-one? (d/db target-conn))
-                                                                   :id->attr  id->attr
-                                                                   :blacklist blacklist
-                                                                   :rewrite   rewrite} pruned-txn)]
+                             final-txn    (sort-by (comp str second)
+                                                   (rewrite-and-filter-txn {:to-one?   (partial to-one? (d/db target-conn))
+                                                                            :id->attr  id->attr
+                                                                            :blacklist blacklist
+                                                                            :rewrite   rewrite} pruned-txn))]
                          (try
                            (when (empty? final-txn)
                              (throw (ex-info "Incorrect transaction didn't record restore (empty!)" {})))
